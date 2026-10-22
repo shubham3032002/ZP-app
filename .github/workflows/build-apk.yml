@@ -22,23 +22,19 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-
-      - name: Show versions
-        run: |
-          node -v
-          npm -v
-          java -version
-          ls -la
-          ls -la android
+          cache: gradle
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build web app
         run: npm run build
-        env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
-          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+
+      - name: Create Android project if missing
+        run: |
+          if [ ! -f android/gradlew ]; then
+            npx cap add android
+          fi
 
       - name: Sync Capacitor
         run: npx cap sync android
@@ -52,5 +48,6 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
+          name: sahakar-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
