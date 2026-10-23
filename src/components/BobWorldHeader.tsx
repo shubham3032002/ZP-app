@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Search, Bell, Sparkles, Award, ShieldCheck, LogOut, UserRound } from 'lucide-react';
 import { useBank } from '../context/BankContext';
 import zpLogo from '../../assets/images/zplogo.png';
@@ -19,6 +19,7 @@ export const BobWorldHeader: React.FC<BobWorldHeaderProps> = ({
   onOpenSearch,
 }) => {
   const { profile, notifications, memberShares,society, logout } = useBank();
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const greetingName = profile.name.trim();
@@ -91,26 +92,50 @@ export const BobWorldHeader: React.FC<BobWorldHeaderProps> = ({
               )}
             </button> */}
 
-            {/* Avatar */}
-            <button
-              onClick={onOpenProfile}
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-emerald-800 to-teal-900 border-2 border-white shadow-xs flex items-center justify-center font-bold text-white text-[10px] sm:text-xs hover:ring-2 hover:ring-orange-400 transition-all cursor-pointer active:scale-95 shrink-0 ml-0.5"
-              title={[profile.name, memberShares.memberNumber && `Member #${memberShares.memberNumber}`].filter(Boolean).join(' • ')}
-            >
-              <UserRound className="w-4 h-4 sm:w-[18px] sm:h-[18px]" aria-hidden="true" />
-            </button>
-
-            {/* Logout / Exit */}
-            <button
-              onClick={() => {
-                logout();
-              }}
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100/90 hover:bg-rose-50 text-slate-600 hover:text-rose-600 flex items-center justify-center transition-all cursor-pointer border border-slate-200/60 shadow-2xs active:scale-95 shrink-0"
-              aria-label="Log Out"
-              title="Log Out / Lock Society Account"
-            >
-              <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            </button>
+            {/* Profile menu */}
+            <div className="relative">
+              <button
+                onClick={() => setIsProfileMenuOpen((open) => !open)}
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-emerald-800 to-teal-900 border-2 border-white shadow-xs flex items-center justify-center text-white hover:ring-2 hover:ring-orange-400 transition-all cursor-pointer active:scale-95 shrink-0 ml-0.5"
+                title={profile.name}
+                aria-label="Open profile menu"
+                aria-haspopup="menu"
+                aria-expanded={isProfileMenuOpen}
+              >
+                <UserRound className="w-4 h-4 sm:w-[18px] sm:h-[18px]" aria-hidden="true" />
+              </button>
+              {isProfileMenuOpen && (
+                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-white border border-slate-200 shadow-xl p-2 z-50" role="menu">
+                  <div className="px-3 py-2 border-b border-slate-100">
+                    <p className="text-sm font-bold text-slate-900 truncate">{profile.name}</p>
+                    {memberShares.memberNumber && (
+                      <p className="text-xs text-slate-500">Member #{memberShares.memberNumber}</p>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => {
+                      setIsProfileMenuOpen(false);
+                      onOpenProfile();
+                    }}
+                    className="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                    role="menuitem"
+                  >
+                    View profile
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsProfileMenuOpen(false);
+                      logout();
+                    }}
+                    className="w-full flex items-center gap-2 text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-rose-600 hover:bg-rose-50 transition-colors"
+                    role="menuitem"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Log out
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
