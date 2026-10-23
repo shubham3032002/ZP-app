@@ -1,4 +1,9 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+// Use Vite's same-origin proxy in development so browsers on the LAN do not
+// send cross-origin preflight requests to the API. Production builds continue
+// to use the configured backend URL (and Capacitor's native HTTP bridge).
+const API_BASE_URL = import.meta.env.DEV
+  ? '/api'
+  : import.meta.env.VITE_API_URL;
 
 const TOKEN_KEY = 'sahakar_coop_auth_token_v1';
 

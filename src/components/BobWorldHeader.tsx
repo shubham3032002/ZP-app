@@ -1,6 +1,7 @@
 import React from 'react';
-import { Search, Bell, Sparkles, Award, ShieldCheck, LogOut } from 'lucide-react';
+import { Search, Bell, Sparkles, Award, ShieldCheck, LogOut, UserRound } from 'lucide-react';
 import { useBank } from '../context/BankContext';
+import zpLogo from '../../assets/images/zplogo.png';
 
 interface BobWorldHeaderProps {
   activeTopTab: string;
@@ -31,13 +32,6 @@ export const BobWorldHeader: React.FC<BobWorldHeaderProps> = ({
     { id: 'society', label: 'Society' },
   ];
 
-  const initials = profile.name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .substring(0, 2)
-    .toUpperCase();
-
   return (
     <div className="w-full bg-white/95 backdrop-blur-md pt-3 pb-1 px-3 sm:px-4 border-b border-orange-100/70 sticky top-0 z-30 shadow-xs">
       <div className="max-w-lg mx-auto">
@@ -50,11 +44,11 @@ export const BobWorldHeader: React.FC<BobWorldHeaderProps> = ({
             onClick={() => setActiveTopTab('accounts')}
           >
             <div className="relative shrink-0">
-              <div className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-[#E6390A] via-[#F1592A] to-[#FF7A45] text-white shadow-md shadow-orange-600/30 group-hover:scale-105 transition-transform overflow-hidden">
+              <div className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white border border-slate-100 shadow-md shadow-orange-600/20 group-hover:scale-105 transition-transform overflow-hidden">
                 <img
-                  src="/logo.png"
+                  src={zpLogo}
                   alt={society?.name ?? memberShares.societyName}
-                  className="w-full h-full object-contain p-1.5"
+                  className="w-full h-full object-contain"
                   onError={(e) => {
                     // if the logo fails to load, fall back to the "सह" glyph
                     (e.currentTarget as HTMLImageElement).style.display = 'none';
@@ -103,7 +97,7 @@ export const BobWorldHeader: React.FC<BobWorldHeaderProps> = ({
               className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-emerald-800 to-teal-900 border-2 border-white shadow-xs flex items-center justify-center font-bold text-white text-[10px] sm:text-xs hover:ring-2 hover:ring-orange-400 transition-all cursor-pointer active:scale-95 shrink-0 ml-0.5"
               title={[profile.name, memberShares.memberNumber && `Member #${memberShares.memberNumber}`].filter(Boolean).join(' • ')}
             >
-              {initials}
+              <UserRound className="w-4 h-4 sm:w-[18px] sm:h-[18px]" aria-hidden="true" />
             </button>
 
             {/* Logout / Exit */}

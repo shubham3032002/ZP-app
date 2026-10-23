@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Lock, User, Eye, EyeOff, Building2, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Lock, User, Eye, EyeOff, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
 import { useBank } from '../context/BankContext';
+import zpLogo from '../../assets/images/zplogo.png';
 
 interface LoginPageProps {
   onSuccess?: () => void;
@@ -47,9 +48,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
       <div className="max-w-md w-full bg-white rounded-3xl shadow-xl border border-slate-200 p-8 space-y-6">
         {/* Bank Header & Branding */}
         <div className="text-center space-y-2">
-          <div className="w-16 h-16 bg-gradient-to-tr from-[#E6390A] to-[#FF7A45] rounded-2xl flex items-center justify-center text-white mx-auto shadow-lg shadow-orange-500/25">
-            <Building2 className="w-8 h-8" />
-          </div>
+          <img
+            src={zpLogo}
+            alt="Raigad Zilla Parishad Employees' Co-operative Society Ltd. logo"
+            className="w-20 h-20 object-contain mx-auto rounded-full shadow-md"
+          />
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">
             Raigad Zilla Parishad Employees' Co-operative Society Ltd.
           </h1>
